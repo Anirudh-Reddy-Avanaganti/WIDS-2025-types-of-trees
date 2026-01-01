@@ -48,15 +48,29 @@ void RedBlackTree::printRBT(ptr start, const std::string& prefix, bool isLeftChi
 // Function performing right rotation
 // of the passed node
 void RedBlackTree::rightrotate(ptr loc)
-{
-	
+{node* x=loc->left;
+ loc->left=x->right;
+ if(x->right!=nullptr)(x->right)->parent=loc;
+	x->right=loc;
+ loc->parent=x;
+ if(loc->parent==nullptr)root=x;
+ else if((loc->parent)->right==loc)(loc->parent)->right=x;
+ else (loc->parent)->left=x;
+  x->parent=loc->parent;
 }
 
 // Function performing left rotation
 // of the passed node
 void RedBlackTree::leftrotate(ptr loc)
-{
-	
+{node* x=loc->right;
+ loc->right=x->left;
+ if(x->left!=nullptr)(x->left)->parent=loc;
+	x->left=loc;
+ loc->parent=x;
+ if(loc->parent==nullptr)root=x;
+ else if((loc->parent)->left==loc)(loc->parent)->left=x;
+ else (loc->parent)->right=x;
+  x->parent=loc->parent;
 }
 
 // This function fixes violations
@@ -77,5 +91,6 @@ void RedBlackTree::inorder(ptr start) const
 	std::cout << start->data << " ";
 	inorder(start->right);
 }
+
 
 
