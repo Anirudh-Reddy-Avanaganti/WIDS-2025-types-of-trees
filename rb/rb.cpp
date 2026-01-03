@@ -17,6 +17,7 @@ ptr RedBlackTree::insert(int data)
 		return newnodePtr;
 	}
 	insert(root, newnodePtr);
+	fixup(newnodePtr);
 	return newnodePtr;
 }
 
@@ -84,11 +85,14 @@ void RedBlackTree::fixup(ptr loc)
 				loc->parent->parent->color=1;
 			loc=loc->parent->parent;}
 			else{
-				if(loc->parent->right==loc){leftrotate( loc->parent);
-				rightrotate(loc->parent);
+				if(loc->parent->right==loc){
+					loc=loc->parent;
+					leftrotate(loc);
+				rightrotate(loc->parent->parent);
 					loc->color=0;
 					loc->right->color=1;					   }
-				else {rightrotate(loc->parent->parent);
+				else {
+					rightrotate(loc->parent->parent);
 							loc->parent->right->color=1;
 					 loc->parent->color=0;}
 			}
@@ -100,8 +104,10 @@ void RedBlackTree::fixup(ptr loc)
 				loc->parent->parent->color=1;
 					loc=loc->parent->parent;}
 			else{
-				if(loc->parent->left==loc){rightrotate(loc->parent);
-				leftrotate(loc->parent);
+				if(loc->parent->left==loc){
+					loc=loc->parent;
+					rightrotate(loc);
+				leftrotate(loc->parent->parent);
 						loc->color=0;
 					loc->left->color=1;					  }
 											else {leftrotate(loc->parent->parent);
@@ -109,8 +115,8 @@ void RedBlackTree::fixup(ptr loc)
 					 loc->parent->color=0;}
 			}
 			}
-		root->color=0;
-	}
+	}		root->color=0;
+
 }
 
 // Function to print inorder traversal
@@ -124,6 +130,7 @@ void RedBlackTree::inorder(ptr start) const
 	std::cout << start->data << " ";
 	inorder(start->right);
 }
+
 
 
 
