@@ -23,13 +23,25 @@ ptr RedBlackTree::insert(int data)
 
 // auxiliary function to perform RBT insertion of a node
 // you may assume start is not nullptr
-void RedBlackTree::insert(ptr start, ptr newnodePtr)
-{if(start==nullptr){start=newnodePtr;return;}
-	if(start->data <newnodePtr->data)
-	insert(start->right,newnodePtr);
-	else insert(start->left,newnodePtr);
-	return;
+void RedBlackTree::insert(ptr start, ptr n)
+{
+    if (n->data < start->data) {
+        if (start->left)
+            insert(start->left, n);
+        else {
+            start->left = n;
+            n->parent = start;
+        }
+    } else {
+        if (start->right)
+            insert(start->right, n);
+        else {
+            start->right = n;
+            n->parent = start;
+        }
+    }
 }
+
 
 // Credits to Adrian Schneider
 void RedBlackTree::printRBT(ptr start, const std::string& prefix, bool isLeftChild) const
@@ -124,6 +136,7 @@ void RedBlackTree::inorder(ptr start) const
 	std::cout << start->data << " ";
 	inorder(start->right);
 }
+
 
 
 
