@@ -88,13 +88,10 @@ void RedBlackTree::fixup(ptr loc)
 				if(loc->parent->right==loc){
 					loc=loc->parent;
 					leftrotate(loc);
-				rightrotate(loc->parent->parent);
-					loc->color=0;
-					loc->right->color=1;					   }
-				else {
-					rightrotate(loc->parent->parent);
-							loc->parent->right->color=1;
-					 loc->parent->color=0;}
+				}
+					loc->parent->color=0;
+					loc->parent->parent->color=1;
+				rightrotate(loc->parent->parent);					   }
 			}
 		}
 			else{
@@ -107,13 +104,10 @@ void RedBlackTree::fixup(ptr loc)
 				if(loc->parent->left==loc){
 					loc=loc->parent;
 					rightrotate(loc);
+				}
+					loc->parent->color=0;
+					loc->parent->parent->color=1;
 				leftrotate(loc->parent->parent);
-						loc->color=0;
-					loc->left->color=1;					  }
-											else {leftrotate(loc->parent->parent);
-												 loc->parent->left->color=1;
-					 loc->parent->color=0;}
-			}
 			}
 	}		root->color=0;
 
@@ -130,6 +124,7 @@ void RedBlackTree::inorder(ptr start) const
 	std::cout << start->data << " ";
 	inorder(start->right);
 }
+
 
 
 
