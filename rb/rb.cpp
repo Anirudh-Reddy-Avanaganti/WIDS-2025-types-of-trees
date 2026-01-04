@@ -93,13 +93,12 @@ void RedBlackTree::fixup(ptr loc)
 {
     while (loc != root && loc->parent->color == 1) {
 
-        // Parent is LEFT child
         if (loc->parent == loc->parent->parent->left) {
 
             ptr uncle = loc->parent->parent->right;
 
             // Case 1: Uncle is RED
-            if (uncle != nullptr && uncle->color == 1) {
+            if (uncle && uncle->color == 1) {
                 loc->parent->color = 0;
                 uncle->color = 0;
                 loc->parent->parent->color = 1;
@@ -115,14 +114,14 @@ void RedBlackTree::fixup(ptr loc)
                 loc->parent->color = 0;
                 loc->parent->parent->color = 1;
                 rightrotate(loc->parent->parent);
+                loc = loc->parent;   // ← CRITICAL
             }
         }
-        // Parent is RIGHT child (mirror cases)
         else {
 
             ptr uncle = loc->parent->parent->left;
 
-            if (uncle != nullptr && uncle->color == 1) {
+            if (uncle && uncle->color == 1) {
                 loc->parent->color = 0;
                 uncle->color = 0;
                 loc->parent->parent->color = 1;
@@ -136,12 +135,14 @@ void RedBlackTree::fixup(ptr loc)
                 loc->parent->color = 0;
                 loc->parent->parent->color = 1;
                 leftrotate(loc->parent->parent);
+                loc = loc->parent;   // ← CRITICAL
             }
         }
     }
 
-    root->color = 0; // root must be BLACK
+    root->color = 0;
 }
+
 
 // INORDER TRAVERSAL
 void RedBlackTree::inorder(ptr start) const
@@ -151,3 +152,4 @@ void RedBlackTree::inorder(ptr start) const
     std::cout << start->data << " ";
     inorder(start->right);
 }
+
