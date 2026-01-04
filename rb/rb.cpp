@@ -33,6 +33,7 @@ void RedBlackTree::insert(ptr start, ptr n)
         else {
             start->left = n;
             n->parent = start;
+            return;
         }
     } else {
         if (start->right)
@@ -40,6 +41,7 @@ void RedBlackTree::insert(ptr start, ptr n)
         else {
             start->right = n;
             n->parent = start;
+            return;
         }
     }
 }
@@ -152,4 +154,5 @@ void RedBlackTree::inorder(ptr start) const
     std::cout << start->data << " ";
     inorder(start->right);
 }
+
 
