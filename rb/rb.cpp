@@ -1,28 +1,30 @@
 #include "rb.h"
 using ptr = RedBlackTree::ptr;
 
-RedBlackTree::RedBlackTree(){}
+RedBlackTree::RedBlackTree() : root(nullptr) {}
 
 const ptr RedBlackTree::getRoot() const
 { 
-	return root; 
+    return root; 
 }
 
 ptr RedBlackTree::insert(int data)
 {
-	ptr newnodePtr = new node(data);
-	if (!root) {
-		root = newnodePtr;
-		root->color = 0; // set root color as black
-		return newnodePtr;
-	}
-	insert(root, newnodePtr);
-	fixup(newnodePtr);
-	return newnodePtr;
+    ptr newnodePtr = new node(data);
+    newnodePtr->color = 1; // NEW NODE MUST BE RED
+
+    if (!root) {
+        root = newnodePtr;
+        root->color = 0; // root is always BLACK
+        return newnodePtr;
+    }
+
+    insert(root, newnodePtr);
+    fixup(newnodePtr);
+    return newnodePtr;
 }
 
-// auxiliary function to perform RBT insertion of a node
-// you may assume start is not nullptr
+// auxiliary function to perform BST insertion
 void RedBlackTree::insert(ptr start, ptr n)
 {
     if (n->data < start->data) {
@@ -42,104 +44,110 @@ void RedBlackTree::insert(ptr start, ptr n)
     }
 }
 
-
-// Credits to Adrian Schneider
-void RedBlackTree::printRBT(ptr start, const std::string& prefix, bool isLeftChild) const
-{
-	if (!start) return;
-
-	std::cout << prefix;
-	std::cout << (isLeftChild ? "|--" : "|__" );
-	// print the value of the node
-	std::cout << start->data << "(" << start->color << ")" << std::endl;
-	// enter the next tree level - left and right branch
-	printRBT(start->left, prefix + (isLeftChild ? "│   " : "    "), true);
-	printRBT(start->right, prefix + (isLeftChild ? "│   " : "    "), false);
-}
-
-// Function performing right rotation
-// of the passed node
+// RIGHT ROTATION
 void RedBlackTree::rightrotate(ptr loc)
-{node* x=loc->left;
- loc->left=x->right;
- if(x->right!=nullptr)(x->right)->parent=loc;
- if(loc->parent==nullptr)root=x;
- else if((loc->parent)->right==loc)(loc->parent)->right=x;
- else (loc->parent)->left=x;
-  x->parent=loc->parent;
- 	x->right=loc;
-  loc->parent=x;
+{
+    ptr x = loc->left;
+    loc->left = x->right;
+
+    if (x->right != nullptr)
+        x->right->parent = loc;
+
+    x->parent = loc->parent;
+
+    if (loc->parent == nullptr)
+        root = x;
+    else if (loc == loc->parent->right)
+        loc->parent->right = x;
+    else
+        loc->parent->left = x;
+
+    x->right = loc;
+    loc->parent = x;
 }
 
-// Function performing left rotation
-// of the passed node
+// LEFT ROTATION
 void RedBlackTree::leftrotate(ptr loc)
-{node* x=loc->right;
- loc->right=x->left;
- if(x->left!=nullptr)(x->left)->parent=loc;
- if(loc->parent==nullptr)root=x;
- else if((loc->parent)->left==loc)(loc->parent)->left=x;
- else (loc->parent)->right=x;
-  x->parent=loc->parent;
- 	x->left=loc;
-  loc->parent=x;
+{
+    ptr x = loc->right;
+    loc->right = x->left;
+
+    if (x->left != nullptr)
+        x->left->parent = loc;
+
+    x->parent = loc->parent;
+
+    if (loc->parent == nullptr)
+        root = x;
+    else if (loc == loc->parent->left)
+        loc->parent->left = x;
+    else
+        loc->parent->right = x;
+
+    x->left = loc;
+    loc->parent = x;
 }
 
-// This function fixes violations
-// caused by RBT insertion
+// FIX RED-BLACK VIOLATIONS
 void RedBlackTree::fixup(ptr loc)
 {
-	while(loc!=root && loc->parent->color==1){
-		if(loc->parent->parent->left==loc->parent){
-			ptr uncle=loc->parent->parent->right;
-			if(uncle!=nullptr && uncle->color==1){
-				uncle->color=0;loc->parent->color=0;
-				loc->parent->parent->color=1;
-			loc=loc->parent->parent;}
-			else{
-				if(loc->parent->right==loc){
-					loc=loc->parent;
-					leftrotate(loc);
-				}
-					loc->parent->color=0;
-					loc->parent->parent->color=1;
-				rightrotate(loc->parent->parent);					   }
-			}
-		}
-			else{
-				ptr uncle=loc->parent->parent->left;
-			if(uncle!=nullptr && uncle->color==1){
-				uncle->color=0;loc->parent->color=0;
-				loc->parent->parent->color=1;
-					loc=loc->parent->parent;}
-			else{
-				if(loc->parent->left==loc){
-					loc=loc->parent;
-					rightrotate(loc);
-				}
-					loc->parent->color=0;
-					loc->parent->parent->color=1;
-				leftrotate(loc->parent->parent);
-			}
-	}		root->color=0;
+    while (loc != root && loc->parent->color == 1) {
 
+        // Parent is LEFT child
+        if (loc->parent == loc->parent->parent->left) {
+
+            ptr uncle = loc->parent->parent->right;
+
+            // Case 1: Uncle is RED
+            if (uncle != nullptr && uncle->color == 1) {
+                loc->parent->color = 0;
+                uncle->color = 0;
+                loc->parent->parent->color = 1;
+                loc = loc->parent->parent;
+            }
+            else {
+                // Case 2: Triangle
+                if (loc == loc->parent->right) {
+                    loc = loc->parent;
+                    leftrotate(loc);
+                }
+                // Case 3: Line
+                loc->parent->color = 0;
+                loc->parent->parent->color = 1;
+                rightrotate(loc->parent->parent);
+            }
+        }
+        // Parent is RIGHT child (mirror cases)
+        else {
+
+            ptr uncle = loc->parent->parent->left;
+
+            if (uncle != nullptr && uncle->color == 1) {
+                loc->parent->color = 0;
+                uncle->color = 0;
+                loc->parent->parent->color = 1;
+                loc = loc->parent->parent;
+            }
+            else {
+                if (loc == loc->parent->left) {
+                    loc = loc->parent;
+                    rightrotate(loc);
+                }
+                loc->parent->color = 0;
+                loc->parent->parent->color = 1;
+                leftrotate(loc->parent->parent);
+            }
+        }
+    }
+
+    root->color = 0; // root must be BLACK
 }
 
-// Function to print inorder traversal
-// of the fixated tree
+// INORDER TRAVERSAL
 void RedBlackTree::inorder(ptr start) const
 {
-	if (!start)
-		return;
-	
-	inorder(start->left);
-	std::cout << start->data << " ";
-	inorder(start->right);
+    if (!start) return;
+    inorder(start->left);
+    std::cout << start->data << " ";
+    inorder(start->right);
 }
-
-
-
-
-
-
-
