@@ -217,3 +217,20 @@ void RedBlackTree::inorder(ptr start) const
 	std::cout << start->data << " ";
 	inorder(start->right);
 }
+void RedBlackTree::printRBT(
+    ptr start,
+    const std::string& prefix,
+    bool isLeftChild
+) const
+{
+    if (!start) return;
+
+    std::cout << prefix;
+    std::cout << (isLeftChild ? "|--" : "|__");
+    std::cout << start->data << "(" << start->color << ")" << std::endl;
+
+    printRBT(start->left,  prefix + (isLeftChild ? "│   " : "    "), true);
+    printRBT(start->right, prefix + (isLeftChild ? "│   " : "    "), false);
+}
+
+
