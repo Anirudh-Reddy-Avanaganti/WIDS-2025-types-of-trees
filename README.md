@@ -38,6 +38,7 @@ Week 3:
       Written 4 functions in rb.cpp in rb folder in this repo
       
 Week 4:
+
        Tries
 	   Compressed Tries
        Suffix tries
