@@ -1,7 +1,8 @@
 Week 1:Definitions of trees like leaf,child,rightchild,leftchild etc..
 
 Week 2:
-    Tree walks
+    
+	Tree walks
        Pre-order walk,Post-order walk,Inorder walk
        BST definition ans Algos:search
                                 insert
