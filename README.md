@@ -1,6 +1,7 @@
 Week 1:Definitions of trees like leaf,child,rightchild,leftchild etc..
 
-Week 2:Tree walks
+Week 2:
+    Tree walks
        Pre-order walk,Post-order walk,Inorder walk
        BST definition ans Algos:search
                                 insert
@@ -23,6 +24,7 @@ Week 2:Tree walks
        14 Leetcode problems
 	
 Week 3:
+
       RBT:
           Insert
           Black height
