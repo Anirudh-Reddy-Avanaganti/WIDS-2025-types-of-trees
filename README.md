@@ -39,8 +39,11 @@ Week 3:
       
 Week 4:
        Tries
+       
 	   Compressed Tries
+       
        Suffix tries
+       
 	   Constructing Suffix Tries
 	   
             
