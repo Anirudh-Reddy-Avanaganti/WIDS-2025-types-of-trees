@@ -1,4 +1,5 @@
 Week 1:Definitions of trees like leaf,child,rightchild,leftchild etc..
+
 Week 2:Tree walks
        Pre-order walk,Post-order walk,Inorder walk
        BST definition ans Algos:search
@@ -8,6 +9,7 @@ Week 2:Tree walks
                                 minima
                                 predecessor
                                 successor
+				    
        Heap:
             Priority Queue
             Partial Sorting
@@ -19,6 +21,7 @@ Week 2:Tree walks
             Delete max
             Heap sort
        14 Leetcode problems
+	
 Week 3:
       RBT:
           Insert
@@ -26,12 +29,14 @@ Week 3:
           Maxima
           Minima
           Delete
+	   
       AVL:
           Height
           Insert
           Delete
           Rebalancing
       Written 4 functions in rb.cpp in rb folder in this repo
+      
 Week 4:
        Tries
        Suffix tries
